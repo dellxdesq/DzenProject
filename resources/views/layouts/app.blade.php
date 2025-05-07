@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
+    <title>Создать статью</title>
+
+    <link href="{{ asset('css/createArticle.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/articleShow.css') }}" rel="stylesheet">
 </head>
 <body>
-    <nav>
-    </nav>
 
-    <div class="container">
 @yield('content')
-</div>
+
 </body>
 </html>
 

@@ -12,7 +12,8 @@ return new class extends Migration {
             $table->string('title');
             $table->text('content');
             $table->string('preview_path')->nullable();
-            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

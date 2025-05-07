@@ -14,7 +14,7 @@ class ArticleService
             $data['preview_path'] = $path;
         }
 
-        $data['author_id'] = 1; //тут фиксить
+        //$data['author_id'] = 1; //тут фиксить
 
         return Article::create($data);
     }

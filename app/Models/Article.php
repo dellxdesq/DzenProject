@@ -15,5 +15,16 @@ class Article extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Likes::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
 }
 

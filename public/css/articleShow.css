@@ -1,0 +1,28 @@
+.article-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.article-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.article-title {
+    font-size: 2rem;
+    margin: 0.5rem 0;
+}
+
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.article-footer {
+    border-top: 1px solid #ccc;
+    padding-top: 1rem;
+    color: #555;
+}
