@@ -5,13 +5,13 @@
     font-family: Arial, sans-serif;
 }
 
-.article-header {
-    text-align: center;
+.article-header-left {
+    text-align: left;
     margin-bottom: 2rem;
 }
 
 .article-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin: 0.5rem 0;
 }
 
@@ -19,10 +19,59 @@
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
 }
 
 .article-footer {
     border-top: 1px solid #ccc;
     padding-top: 1rem;
     color: #555;
+}
+
+
+.comment-form textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    margin-bottom: 0.5rem;
+}
+
+.comments-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 1rem;
+}
+
+.like-button,
+.comment-toggle {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    background-color: #5a4545;
+    color: white;
+    border-radius: 4px;
+    min-width: 30px;
+
+    text-align: center;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.like-button:hover,
+.comment-toggle:hover {
+    background-color: #4a89c7;
+}
+
+.comments-list li {
+    word-wrap: break-word;
+    white-space: normal;
 }

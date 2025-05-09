@@ -1,29 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Создать статью</h1>
+    <div class="container article-create">
 
         <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <div>
-                <label for="title">Название</label>
-                <input type="text" name="title" value="{{ old('title') }}" required>
+            <div class="form-header">
+                <h1>Создание статьи</h1>
+
+                <div class="form-header-actions">
+                    <input type="file" name="preview" id="preview-input" style="display: none;" onchange="updateFileName(this)">
+                    <!--<label for="preview-input" class="preview-button">Загрузить превью</label>-->
+                    <!--<span id="preview-filename" class="preview-filename">Файл не выбран</span>-->
+
+                    <button type="submit">Опубликовать</button>
+                </div>
             </div>
 
-            <div>
-                <label for="content">Содержимое</label>
-                <textarea name="content" rows="10" required>{{ old('content') }}</textarea>
+            <div class="form-body">
+                <div>
+                    <label for="title">Тема</label>
+                    <input type="text" name="title" value="{{ old('title') }}" required>
+                </div>
+
+                <div>
+                    <label for="content">Содержимое</label>
+                    <textarea name="content" rows="10" required>{{ old('content') }}</textarea>
+                </div>
             </div>
 
-            <div>
-                <label for="preview">Превью (изображение)</label>
-                <input type="file" name="preview">
-            </div>
-
-            <button type="submit">Опубликовать</button>
         </form>
     </div>
-@endsection
 
+    <script>
+        function updateFileName(input) {
+            const filename = input.files.length > 0 ? input.files[0].name : 'Файл не выбран';
+            document.getElementById('preview-filename').textContent = filename;
+        }
+    </script>
+@endsection

@@ -5,21 +5,29 @@ body {
     padding: 0;
 }
 
-.container {
-    width: 80%;
-    margin: 50px auto;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.container.article-create {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    text-align: center;
-    font-size: 2em;
-    margin-bottom: 20px;
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
-form {
+.form-header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.form-body {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -28,33 +36,73 @@ form {
 label {
     font-size: 1.1em;
     font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
-input[type="text"], textarea, input[type="file"] {
+input[type="text"],
+textarea,
+input[type="file"] {
     padding: 10px;
-    font-size: 1em;
+    font-size: 1.2rem;
     border: 1px solid #ddd;
     border-radius: 5px;
+    width: 100%;
 }
 
-input[type="text"]:focus, textarea:focus, input[type="file"]:focus {
+input[type="text"]:focus,
+textarea:focus,
+input[type="file"]:focus {
     outline-color: #5b9bd5;
 }
 
 textarea {
-    resize: vertical;
+    resize: none;
+    height: 400px;
 }
 
-button {
-    padding: 10px 15px;
-    background-color: #5b9bd5;
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #5a4545;
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 1.1em;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-button:hover {
+button[type="submit"]:hover {
     background-color: #4a89c7;
+}
+
+.form-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.preview-button {
+    padding: 8px 12px;
+    background-color: #7a7a7a;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.preview-button:hover {
+    background-color: #5b5b5b;
+}
+
+.preview-filename {
+    font-size: 0.9em;
+    color: #444;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

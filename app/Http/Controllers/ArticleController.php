@@ -9,7 +9,7 @@ use App\Http\Requests\StoreArticleRequest;
 use App\Http\Services\ArticleService;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
