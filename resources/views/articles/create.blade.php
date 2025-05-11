@@ -1,6 +1,5 @@
-@extends('layouts.app')
-
-@section('content')
+{{-- resources/views/articles/create.blade.php --}}
+<x-app-layout>
     <div class="container article-create">
 
         <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
@@ -39,4 +38,4 @@
             document.getElementById('preview-filename').textContent = filename;
         }
     </script>
-@endsection
+</x-app-layout>

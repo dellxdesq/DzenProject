@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-app-layout>
     <div class="article-page">
 
         <div class="article-header-left">
@@ -53,4 +51,4 @@
             section.style.display = section.style.display === 'none' ? 'block' : 'none';
         }
     </script>
-@endsection
+</x-app-layout>
