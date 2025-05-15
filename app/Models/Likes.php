@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Likes extends Model
 {
     protected $fillable = ['article_id', 'user_id'];
@@ -12,5 +12,11 @@ class Likes extends Model
     {
         return $this->belongsTo(Article::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
 

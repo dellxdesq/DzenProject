@@ -1,16 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
-
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Likes;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Services\ArticleService;
-
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+
 
 class ArticleController extends Controller
 {
@@ -30,9 +27,24 @@ class ArticleController extends Controller
 
     public function like($id)
     {
-        Likes::create(['article_id' => $id, 'user_id' => null]); // Пока без user_id
+        $userId = auth()->id();
+
+        $existingLike = Likes::where('article_id', $id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($existingLike) {
+            $existingLike->delete();
+        } else {
+            Likes::create([
+                'article_id' => $id,
+                'user_id' => $userId,
+            ]);
+        }
+
         return back();
     }
+
 
     public function comment(Request $request, $id)
     {
@@ -42,7 +54,7 @@ class ArticleController extends Controller
 
         Comment::create([
             'article_id' => $id,
-            'user_id' => null,
+            'user_id' => auth()->id(),
             'text' => $request->input('text')
         ]);
 
@@ -51,11 +63,8 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-        $article = Article::with(['likes', 'comments'])->findOrFail($id);
+        $article = Article::with(['likes.user', 'comments.user'])->findOrFail($id);
         return view('articles.show', compact('article'));
     }
-
-
-
 }
 

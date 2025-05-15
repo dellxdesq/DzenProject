@@ -13,29 +13,45 @@
         <div class="article-footer">
 
             <div class="action-buttons">
-                <form action="{{ route('articles.like', $article->id) }}" method="POST" class="like-form">
-                    @csrf
-                    <button type="submit" class="like-button">❤️ {{ $article->likes->count() }}</button>
-                </form>
+                @auth
+                    <form action="{{ route('articles.like', $article->id) }}" method="POST" class="like-form">
+                        @csrf
+                        @php
+                            $hasLiked = $article->likes->contains('user_id', auth()->id());
+                        @endphp
+                        <form action="{{ route('articles.like', $article->id) }}" method="POST" class="like-form">
+                            @csrf
+                            <button type="submit" class="like-button">
+                                {{ $hasLiked ? '💔' : '❤️' }} ({{ $article->likes->count() }})
+                            </button>
+                        </form>
+                    </form>
 
-                <button onclick="toggleCommentForm()" class="comment-toggle">💬 Оставить комментарий</button>
+                    <button onclick="toggleCommentForm()" class="comment-toggle">💬 Оставить комментарий</button>
+                @else
+                    <p>Войдите, чтобы ставить лайки и оставлять комментарии.</p>
+                @endauth
             </div>
 
-            <div class="comments" id="comment-section" style="display: none;">
-                <form action="{{ route('articles.comment', $article->id) }}" method="POST" class="comment-form">
-                    @csrf
-                    <textarea name="text" rows="3" placeholder="Ваш комментарий..."></textarea>
-                    <br>
-                    <button type="submit">Добавить</button>
-                </form>
-            </div>
+            @auth
+                <div class="comments" id="comment-section" style="display: none;">
+                    <form action="{{ route('articles.comment', $article->id) }}" method="POST" class="comment-form">
+                        @csrf
+                        <textarea name="text" rows="3" placeholder="Ваш комментарий..."></textarea>
+                        <br>
+                        <button type="submit">Добавить</button>
+                    </form>
+                </div>
+            @endauth
 
             <div class="comments-list">
                 <h3>Комментарии ({{ $article->comments->count() }})</h3>
                 <ul>
                     @foreach ($article->comments as $comment)
                         <li style="margin-bottom: 1rem;">
-                            <strong>Аноним:</strong> {{ $comment->text }}<br>
+                            <strong>
+                                {{ $comment->user?->full_name ?? $comment->user?->login ?? 'Аноним' }}
+                            </strong>: {{ $comment->text }}<br>
                             <small>{{ $comment->created_at->format('d.m.Y H:i') }}</small>
                         </li>
                     @endforeach
