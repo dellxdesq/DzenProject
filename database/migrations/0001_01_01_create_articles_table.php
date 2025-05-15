@@ -11,10 +11,19 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('preview_path')->nullable();
-            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->string('preview')->nullable(); // Краткое описание
+            $table->string('preview_path')->nullable(); // Путь к превью-изображению
 
-            $table->timestamps();
+            $table->timestamp('created_date')->nullable();
+            $table->timestamp('publish_date')->nullable();
+            $table->timestamp('edit_date')->nullable();
+            $table->timestamp('delete_date')->nullable();
+            $table->boolean('is_publish')->default(false);
+
+            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('last_editor_id')->nullable()->constrained('users')->onDelete('set null');
+
+            $table->timestamps(); // created_at и updated_at
         });
     }
 
@@ -23,4 +32,3 @@ return new class extends Migration {
         Schema::dropIfExists('articles');
     }
 };
-
