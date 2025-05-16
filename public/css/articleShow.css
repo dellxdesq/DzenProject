@@ -75,3 +75,32 @@
     word-wrap: break-word;
     white-space: normal;
 }
+
+.article-preview {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.article-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.article-tags {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tag-badge {
+    display: inline-block;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 0.25rem 0.75rem;
+    margin-right: 0.5rem;
+    font-size: 0.85rem;
+    color: #333;
+}
+

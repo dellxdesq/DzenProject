@@ -7,7 +7,9 @@ use App\Models\Likes;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Services\ArticleService;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
+use App\Models\Tag;
 
 class ArticleController extends Controller
 {
@@ -16,13 +18,42 @@ class ArticleController extends Controller
         return view('articles.create');
     }
 
-    public function store(StoreArticleRequest $request, ArticleService $service)
+    public function store(Request $request)
     {
-        $article = $service->create($request->validated(), $request->file('preview'));
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'preview' => 'nullable|image',
+            'tags' => 'nullable|string',
+        ]);
 
-        return redirect()
-            ->route('articles.show', $article->id)
-            ->with('success', 'Статья создана!');
+        $previewPath = null;
+
+        if ($request->hasFile('preview')) {
+            $previewPath = $request->file('preview')->store('previews', 'public');
+        }
+
+        $article = Article::create([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'preview_path' => $previewPath,
+            'created_date' => Carbon::now(),
+            'publish_date' => Carbon::now(),
+            'author_id' => auth()->id(),
+            'is_publish' => true
+        ]);
+
+        if ($request->filled('tags')) {
+            $tags = explode(',', $request->tags);
+            foreach ($tags as $tag) {
+                Tag::create([
+                    'post_id' => $article->id,
+                    'name' => trim($tag)
+                ]);
+            }
+        }
+
+        return redirect()->route('articles.show', $article->id);
     }
 
     public function like($id)

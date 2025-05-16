@@ -9,7 +9,13 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'preview_path', 'author_id'];
+    protected $fillable = ['title', 'content', 'preview_path', 'author_id', 'created_date', 'publish_date', 'is_publish'];
+
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'post_id');
+    }
 
     public function author()
     {

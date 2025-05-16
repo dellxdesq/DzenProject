@@ -29,6 +29,16 @@
                 </div>
             </div>
 
+            <div>
+                <label for="preview">Превью (изображение)</label>
+                <input type="file" name="preview" id="preview-input" accept="image/*">
+            </div>
+
+            <div>
+                <label for="tags">Теги (через запятую)</label>
+                <input type="text" name="tags" value="{{ old('tags') }}" placeholder="тег1, тег2, тег3">
+            </div>
+
         </form>
     </div>
 
