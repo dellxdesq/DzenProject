@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ChannelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,7 +15,7 @@ Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles
 Route::post('/articles/{id}/like', [ArticleController::class, 'like'])->name('articles.like');
 Route::post('/articles/{id}/comment', [ArticleController::class, 'comment'])->name('articles.comment');
 
-
+Route::get('/channel/{id}', [ChannelController::class, 'show'])->name('channel.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
