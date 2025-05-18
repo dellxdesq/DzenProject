@@ -1,8 +1,12 @@
 .article-page {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 900px;
     font-family: Arial, sans-serif;
+    margin: 1rem auto;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
 }
 
 .article-header-left {
@@ -95,12 +99,8 @@
 
 .tag-badge {
     display: inline-block;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 16px;
-    padding: 0.25rem 0.75rem;
     margin-right: 0.5rem;
-    font-size: 0.85rem;
-    color: #333;
+
+
 }
 

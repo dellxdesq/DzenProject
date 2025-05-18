@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Models\Tag;
+use League\CommonMark\CommonMarkConverter;
 
 class ArticleController extends Controller
 {
@@ -95,6 +96,22 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::with(['likes.user', 'comments.user'])->findOrFail($id);
+
+        $content = $article->content;
+
+        // Заменяем двойные переносы строк на один перенос + <br>
+        $contentWithBr = preg_replace("/\n\s*\n/", "\n<br>\n", $content);
+
+        $converter = new CommonMarkConverter([
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+            'renderer' => [
+                'soft_break' => '<br>',
+            ],
+        ]);
+
+        $article->content_html = $converter->convert($contentWithBr)->getContent();
+
         return view('articles.show', compact('article'));
     }
 }

@@ -4,37 +4,26 @@
         <div class="article-header-left">
             <h2 class="channel-name">Название канала: нихуяшеньки пока</h2>
             <h2 class="article-title">Тема статьи: {{ $article->title }}</h2>
-        </div>
-
-        <div class="article-meta">
-            <p><strong>Автор:</strong> {{ $article->author?->full_name ?? 'Неизвестно' }}</p>
-            <p><strong>Опубликовано:</strong>
-                {{ $article->publish_date ? \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y H:i') : 'Не указано' }}
-            </p>
-            <p><strong>Изменено:</strong>
-                {{ $article->edit_date ? \Carbon\Carbon::parse($article->edit_date)->format('d.m.Y H:i') : 'Не указано' }}
-            </p>
-
-            @if ($article->preview_path)
-                <img src="{{ asset('storage/' . $article->preview_path) }}" alt="Превью" style="max-width: 300px;">
-            @endif
-
-            @if ($article->preview_path)
-                <div class="article-preview">
-                    <img src="{{ asset('storage/' . $article->preview_path) }}" alt="Превью">
-                </div>
-            @endif
-
-            <div class="article-tags">
-                <strong>Теги:</strong>
-                @foreach ($article->tags as $tag)
-                    <span class="tag-badge">{{ $tag->name }}</span>
-                @endforeach
+            <div class="article-meta">
+                <p><strong>Автор:</strong> {{ $article->author?->full_name ?? 'Неизвестно' }}</p>
+                <p><strong>Опубликовано:</strong>
+                    {{ $article->publish_date ? \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y H:i') : 'Не указано' }}
+                </p>
+                <p><strong>Изменено:</strong>
+                    {{ $article->edit_date ? \Carbon\Carbon::parse($article->edit_date)->format('d.m.Y H:i') : '' }}
+                </p>
             </div>
         </div>
 
         <div class="article-content">
-            {!! nl2br(e($article->content)) !!}
+            {!! $article->content_html !!}
+        </div>
+
+        <div class="article-tags">
+            <strong>Теги:</strong>
+            @foreach ($article->tags as $tag)
+                <span class="tag-badge">{{ $tag->name }}</span>
+            @endforeach
         </div>
 
         <div class="article-footer">

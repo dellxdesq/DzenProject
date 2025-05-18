@@ -30,7 +30,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="overflow-y-hidden">
                 {{ $slot }}
             </main>
         </div>
