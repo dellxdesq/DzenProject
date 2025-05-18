@@ -35,6 +35,7 @@ class ChannelController extends Controller
     public function destroy(Channel $channel)
     {
         $this->authorize('delete', $channel);
+        $channel->articles()->delete();
         $channel->delete();
 
         return redirect()->route('dashboard')->with('success', 'Канал удалён');
