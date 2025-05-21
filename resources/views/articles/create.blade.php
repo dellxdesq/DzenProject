@@ -7,10 +7,6 @@
             <div class="form-header">
                 <h1>Создание статьи</h1>
                 <div class="form-header-actions">
-                    <input type="file" name="preview" id="preview-input" style="display: none;" onchange="updateFileName(this)">
-                    <!--<label for="preview-input" class="preview-button">Загрузить превью</label>-->
-                    <!--<span id="preview-filename" class="preview-filename">Файл не выбран</span>-->
-
                     <button type="submit">Опубликовать</button>
                 </div>
             </div>

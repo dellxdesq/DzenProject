@@ -31,7 +31,17 @@ class ArticleController extends Controller
         $previewPath = null;
 
         if ($request->hasFile('preview')) {
-            $previewPath = $request->file('preview')->store('previews', 'public');
+            $file = $request->file('preview');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $destination = base_path('storage/articles_photo');
+
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+
+            $file->move($destination, $filename);
+
+            $previewPath = 'storage/articles_photo/' . $filename;
         }
 
         $article = Article::create([
