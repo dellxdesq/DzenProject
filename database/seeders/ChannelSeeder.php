@@ -4,16 +4,15 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Channel;
+use App\Models\Tag;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class ChannelSeeder extends Seeder
 {
     public function run(): void
     {
-        // User::factory(10)->create();
-
         $user = User::factory()->create([
             'login' => 'author',
             'full_name' => 'Test Author',
@@ -21,21 +20,31 @@ class ChannelSeeder extends Seeder
             'password' => bcrypt('123'),
         ]);
 
-        // создаём канал
         $channel = Channel::create([
             'user_id' => $user->id,
             'name' => 'Author Channel',
-            'description' => 'Какое-то описание канала с множеством слов, которое не поместится в одну строку и надо будет нажать на описание чтобы увидеть это описание целиком.',
+            'description' => 'Канал с прикольными статьями.',
             'photo' => 'https://i.pravatar.cc/100?img=3',
         ]);
 
-        // создаём статьи
-        foreach (range(1, 6) as $i) {
-            Article::create([
+        foreach (range(1, 12) as $i) {
+            $article = Article::create([
                 'author_id' => $user->id,
                 'title' => "Статья #{$i}",
-                'content' => 'Какое-то наполнение статьи на какую-то тему с какими-то приколами',
+                'content' => "Контент для статьи #{$i}. Это может быть что угодно.",
+                'preview_path' => 'https://via.placeholder.com/300x200.png?text=Превью',
+                'created_date' => Carbon::now()->subDays(6 - $i),
+                'publish_date' => Carbon::now()->subDays(6 - $i),
+                'is_publish' => true,
+            ]);
+
+            // Пример тегов
+            $tags = ['Наука', 'Спорт', 'Еда'];
+            Tag::create([
+                'post_id' => $article->id,
+                'name' => $tags[array_rand($tags)]
             ]);
         }
     }
 }
+

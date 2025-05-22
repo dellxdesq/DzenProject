@@ -14,13 +14,5 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(ChannelSeeder::class);
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'login' => 'author',
-            'full_name' => 'Test Author',
-            'email' => 'author@example.com',
-            'password' => bcrypt('123'),
-        ]);
     }
 }

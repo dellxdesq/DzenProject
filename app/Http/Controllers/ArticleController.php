@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Likes;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Services\ArticleService;
+use App\Repositories\ArticleRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
@@ -14,6 +15,36 @@ use League\CommonMark\CommonMarkConverter;
 
 class ArticleController extends Controller
 {
+
+    public function dashboard(Request $request, ArticleRepository $repository)
+    {
+        $filters = $request->only(['search', 'category']);
+        $articles = $repository->getAll($filters)->paginate(12);
+        $allTags = Tag::select('name')->distinct()->pluck('name');
+
+        return view('dashboard', compact('articles', 'allTags'));
+    }
+
+    public function preview($filename)
+    {
+        $path = base_path('storage/articles_photo/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
+    }
+
+    public function index(Request $request, ArticleRepository $repository)
+    {
+        $filters = $request->only(['search', 'category']);
+        $articles = $repository->getAll($filters)->paginate(12);
+        $allTags = Tag::select('name')->distinct()->pluck('name');
+
+        return view('articles.index', compact('articles', 'allTags'));
+    }
+
     public function create()
     {
         return view('articles.create');
