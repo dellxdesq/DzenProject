@@ -2,8 +2,9 @@
     <div class="article-page">
 
         <div class="article-header-left">
-            <h2 class="channel-name">Название канала: нихуяшеньки пока</h2>
-            <h2 class="article-title">Тема статьи: {{ $article->title }}</h2>
+            <h2 class="channel-name">Канал: {{ $article->channel?->name ?? 'Не указано' }}</h2>
+
+            <h2 class="article-title">Тема: {{ $article->title }}</h2>
             <div class="article-meta">
                 <p><strong>Автор:</strong> {{ $article->author?->full_name ?? 'Неизвестно' }}</p>
                 <p><strong>Опубликовано:</strong>
@@ -15,6 +16,9 @@
             </div>
         </div>
 
+        <div class="article-description">
+            <span style="font-weight: bold;">{!! $article->description !!}</span></p>
+        </div>
         <div class="article-content">
             {!! $article->content_html !!}
         </div>

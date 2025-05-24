@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('preview')->nullable(); // Краткое описание
+            $table->string('description')->nullable(); // Краткое описание
             $table->string('preview_path')->nullable(); // Путь к превью-изображению
 
             $table->timestamp('created_date')->nullable();

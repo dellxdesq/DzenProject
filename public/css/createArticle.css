@@ -7,7 +7,7 @@ body {
 }
 
 .container.article-create {
-    max-width: 900px;
+    max-width: 1250px;
     margin: 1rem auto;
     background: #fff;
     padding: 1.5rem;
@@ -63,7 +63,12 @@ textarea {
     resize: none;
 }
 
-*textarea {
+.textarea-1 {
+    resize: none;
+    height: 300px;
+}
+
+.textarea-2 {
     resize: none;
     height: 300px;
 }
@@ -73,9 +78,9 @@ textarea:focus {
     outline-color: #5b9bd5;
 }
 
-*button[type="submit"] {
+.button-submit {
     padding: 10px 20px;
-    background-color: #5a4545;
+    background-color: green;
     color: white;
     border: none;
     border-radius: 5px;
@@ -84,7 +89,7 @@ textarea:focus {
     transition: background-color 0.2s;
 }
 
-*button[type="submit"]:hover {
+.button-submit:hover {
     background-color: #4a89c7;
 }
 

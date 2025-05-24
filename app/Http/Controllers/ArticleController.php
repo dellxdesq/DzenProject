@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Likes;
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Services\ArticleService;
 use App\Repositories\ArticleRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Models\Tag;
 use League\CommonMark\CommonMarkConverter;
@@ -57,6 +54,7 @@ class ArticleController extends Controller
             'content' => 'required|string',
             'preview' => 'nullable|image',
             'tags' => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
         $previewPath = null;
@@ -78,11 +76,13 @@ class ArticleController extends Controller
         $article = Article::create([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
+            'description' => $request->input('description'),
             'preview_path' => $previewPath,
             'created_date' => Carbon::now(),
             'publish_date' => Carbon::now(),
             'author_id' => auth()->id(),
-            'is_publish' => true
+            'is_publish' => true,
+            'channel_id' => $request->input('channel_id')
         ]);
 
         if ($request->filled('tags')) {
@@ -97,6 +97,7 @@ class ArticleController extends Controller
 
         return redirect()->route('articles.show', $article->id);
     }
+
 
     public function like($id)
     {
@@ -136,7 +137,7 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-        $article = Article::with(['likes.user', 'comments.user'])->findOrFail($id);
+        $article = Article::with(['channel', 'author', 'likes.user', 'comments.user', 'tags'])->findOrFail($id);
 
         $content = $article->content;
 

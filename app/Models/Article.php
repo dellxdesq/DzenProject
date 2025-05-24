@@ -9,7 +9,12 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'preview_path', 'author_id', 'created_date', 'publish_date', 'is_publish'];
+    protected $fillable = ['title', 'content', 'description', 'preview_path', 'author_id', 'created_date', 'publish_date', 'is_publish'];
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+    }
 
 
     public function tags()
