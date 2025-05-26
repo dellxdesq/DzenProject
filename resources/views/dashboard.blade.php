@@ -20,15 +20,15 @@
             <aside class="w-60 bg-gray-800 p-4 rounded shadow shrink-0">
                 <h4 class="font-semibold mb-2 text-white">Категории</h4>
                 <ul class="space-y-1">
-                    @foreach($allTags as $tag)
+                    @foreach($categories as $category)
                         <li>
-                            <a href="{{ route('dashboard', array_merge(request()->all(), ['category' => $tag])) }}"
+                            <a href="{{ route('dashboard', array_merge(request()->all(), ['category' => $category->id])) }}"
                                class="block text-sm px-3 py-1 rounded
-                                {{ request('category') === $tag
-                                    ? 'bg-blue-600 text-white font-semibold'
-                                    : 'text-gray-200 hover:bg-gray-700' }}"
+                {{ request('category') == $category->id
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'text-gray-200 hover:bg-gray-700' }}"
                                style="word-break: break-word;">
-                                {{ $tag }}
+                                {{ $category->name }}
                             </a>
                         </li>
                     @endforeach

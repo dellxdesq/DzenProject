@@ -8,7 +8,7 @@ class ArticleRepository
 {
     public function getAll(array $filters = []): Builder
     {
-        $query = Article::with(['author', 'tags'])
+        $query = Article::with(['author', 'tags', 'categories'])
             ->where('is_publish', true)
             ->orderByDesc('publish_date');
 
@@ -20,8 +20,8 @@ class ArticleRepository
         }
 
         if (!empty($filters['category'])) {
-            $query->whereHas('tags', function ($q) use ($filters) {
-                $q->where('name', $filters['category']);
+            $query->whereHas('categories', function ($q) use ($filters) {
+                $q->where('categories.id', $filters['category']);
             });
         }
 

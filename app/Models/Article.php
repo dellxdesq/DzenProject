@@ -16,6 +16,11 @@ class Article extends Model
         return $this->belongsTo(Channel::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'post_category');
+    }
+
 
     public function tags()
     {

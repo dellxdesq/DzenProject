@@ -8,6 +8,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\Tag;
+use App\Models\Category;
 use League\CommonMark\CommonMarkConverter;
 
 class ArticleController extends Controller
@@ -17,9 +18,9 @@ class ArticleController extends Controller
     {
         $filters = $request->only(['search', 'category']);
         $articles = $repository->getAll($filters)->paginate(12);
-        $allTags = Tag::select('name')->distinct()->pluck('name');
+        $categories = Category::all();
+        return view('dashboard', compact('articles', 'categories'));
 
-        return view('dashboard', compact('articles', 'allTags'));
     }
 
     public function preview($filename)
@@ -37,9 +38,8 @@ class ArticleController extends Controller
     {
         $filters = $request->only(['search', 'category']);
         $articles = $repository->getAll($filters)->paginate(12);
-        $allTags = Tag::select('name')->distinct()->pluck('name');
-
-        return view('articles.index', compact('articles', 'allTags'));
+        $categories = Category::all();
+        return view('articles.index', compact('articles', 'categories'));
     }
 
     public function create()
@@ -54,6 +54,8 @@ class ArticleController extends Controller
             'content' => 'required|string',
             'preview' => 'nullable|image',
             'tags' => 'nullable|string',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
             'description' => 'nullable|string',
         ]);
 
@@ -84,6 +86,9 @@ class ArticleController extends Controller
             'is_publish' => true,
             'channel_id' => $request->input('channel_id')
         ]);
+
+
+        $article->categories()->sync($request->input('categories'));
 
         if ($request->filled('tags')) {
             $tags = explode(',', $request->tags);

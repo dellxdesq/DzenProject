@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::create('post_category', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained('articles')->onDelete('cascade');
+            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            $table->primary(['post_id', 'category_id']);
+            $table->primary(['article_id', 'category_id']);
         });
     }
 
@@ -17,4 +17,3 @@ return new class extends Migration {
         Schema::dropIfExists('post_category');
     }
 };
-

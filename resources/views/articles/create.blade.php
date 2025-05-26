@@ -23,6 +23,17 @@
                 </div>
 
                 <div>
+                    <label for="categories">Категории</label>
+                    <select name="categories[]" multiple required>
+                        @foreach(\App\Models\Category::where('is_hidden', false)->get() as $category)
+                            <option value="{{ $category->id }}"
+                                {{ collect(old('categories'))->contains($category->id) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
                     <label for="tags">Теги (через запятую)</label>
                     <input type="text" name="tags" value="{{ old('tags') }}" placeholder="тег1, тег2, тег3">
                 </div>
