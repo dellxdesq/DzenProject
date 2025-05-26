@@ -15,6 +15,6 @@ class Channel extends Model
 
     public function articles()
     {
-        return $this->hasMany(Article::class, 'author_id', 'user_id');
+        return $this->hasMany(Article::class, 'channel_id');
     }
 }

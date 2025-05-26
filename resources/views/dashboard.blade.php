@@ -75,7 +75,12 @@
                                     {{ \Illuminate\Support\Str::limit($article->description, 150) }}
                                 </p>
                                 <div class="flex justify-between items-center text-sm text-gray-400 mt-auto pt-2 border-t border-gray-700">
-                                    <span>Автор: {{ $article->author->full_name ?? '—' }}</span>
+                                    <span>Канал:
+                                        <a href="{{ route('channels.show', $article->channel->id) }}"
+                                           class="text-indigo-600 hover:text-indigo-800 underline transition">{{ $article->channel->name }}
+                                        </a>
+                                    </span>
+
                                     <span>{{ \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y') }}</span>
                                 </div>
                             </div>

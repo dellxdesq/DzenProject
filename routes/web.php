@@ -15,8 +15,7 @@ Route::post('/articles', [ArticleController::class, 'store'])->name('articles.st
 Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
 Route::post('/articles/{id}/like', [ArticleController::class, 'like'])->name('articles.like');
 Route::post('/articles/{id}/comment', [ArticleController::class, 'comment'])->name('articles.comment');
-
-Route::get('/channel/{id}', [ChannelController::class, 'show'])->name('channel.show');
+Route::get('/channels/{channel}', [ChannelController::class, 'show'])->name('channels.show');
 
 Route::get('/dashboard', [ArticleController::class, 'dashboard'])
     ->middleware(['auth'])

@@ -2,7 +2,17 @@
     <div class="article-page">
 
         <div class="article-header-left">
-            <h2 class="channel-name">Канал: {{ $article->channel?->name ?? 'Не указано' }}</h2>
+            <h2 class="channel-name">
+                Канал:
+                @if($article->channel)
+                    <a href="{{ route('channels.show', $article->channel->id) }}"
+                       class="text-indigo-600 hover:text-indigo-800 underline transition">
+                        {{ $article->channel->name }}
+                    </a>
+                @else
+                    <span class="text-gray-500">Не указано</span>
+                @endif
+            </h2>
 
             <h2 class="article-title">Тема: {{ $article->title }}</h2>
             <div class="article-meta">

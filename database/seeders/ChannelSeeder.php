@@ -36,6 +36,7 @@ class ChannelSeeder extends Seeder
                 'created_date' => Carbon::now()->subDays(6 - $i),
                 'publish_date' => Carbon::now()->subDays(6 - $i),
                 'is_publish' => true,
+                'channel_id' => $channel->id,
             ]);
 
             // Пример тегов

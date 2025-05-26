@@ -21,6 +21,12 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+                @if(Auth::check() && Auth::user()->channel)
+                    <a href="{{ route('channels.show', Auth::user()->channel->id) }}"
+                       class="underline text-sm text-indigo-600 hover:text-indigo-800 transition">
+                        {{ Auth::user()->channel->name }}
+                    </a>
+                @endif
                 <x-theme-toggle />
 
                 <x-dropdown align="right" width="48">
