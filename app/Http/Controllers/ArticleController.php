@@ -44,11 +44,19 @@ class ArticleController extends Controller
 
     public function create()
     {
+        if (!auth()->user()?->hasRole('author')) {
+            abort(403, 'Недостаточно прав для создания статьи.');
+        }
+
         return view('articles.create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->user()?->hasRole('author')) {
+            abort(403, 'Недостаточно прав для создания статьи.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',

@@ -5,7 +5,7 @@
                 {{ __('Список статей') }}
             </h2>
 
-            @if (Auth::user()?->login === 'author')
+            @if (Auth::user()?->hasRole('author'))
                 <a href="{{ route('articles.create') }}"
                    class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
                     + Создать статью

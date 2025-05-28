@@ -61,4 +61,14 @@ class User extends Authenticatable
         return $this->hasOne(Channel::class);
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_role');
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->roles->contains('name', $roleName);
+    }
+
 }
