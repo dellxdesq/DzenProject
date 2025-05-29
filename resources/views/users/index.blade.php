@@ -7,7 +7,7 @@
                 <div class="flex flex-wrap items-center gap-4 mb-4">
                     <!-- Селектор колонки -->
                     <form action="{{ route('users.index') }}" method="GET" class="flex gap-2 w-full md:w-auto">
-                        <select name="filter_by" class="appearance-none max-w-[20px] border rounded px-3 py-2 text-sm dark:bg-gray-700 dark:text-white">
+                        <select name="filter_by" class="appearance-none max-w-[200px] border rounded px-3 py-2 text-sm dark:bg-gray-700 dark:text-white">
                             <option value="login" {{ request('filter_by') == 'login' ? 'selected' : '' }}>Login</option>
                             <option value="full_name" {{ request('filter_by') == 'full_name' ? 'selected' : '' }}>ФИО</option>
                             <option value="email" {{ request('filter_by') == 'email' ? 'selected' : '' }}>Email</option>
