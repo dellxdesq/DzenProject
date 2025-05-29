@@ -17,6 +17,7 @@ Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles
 Route::post('/articles/{id}/like', [ArticleController::class, 'like'])->name('articles.like');
 Route::post('/articles/{id}/comment', [ArticleController::class, 'comment'])->name('articles.comment');
 Route::get('/channels/{channel}', [ChannelController::class, 'show'])->name('channels.show');
+Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
 
 Route::get('/dashboard', [ArticleController::class, 'dashboard'])
     ->middleware(['auth'])
@@ -41,6 +42,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:admin,moder'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users/{user}/make-author', [UserController::class, 'makeAuthor'])->name('users.makeAuthor');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('articles', ArticleController::class)->except(['create', 'store']);
+    Route::post('/articles/{article}/publish', [ArticleController::class, 'publish'])->name('articles.publish');
 });
 
 require __DIR__.'/auth.php';

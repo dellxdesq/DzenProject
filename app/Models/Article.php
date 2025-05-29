@@ -24,7 +24,7 @@ class Article extends Model
 
     public function tags()
     {
-        return $this->hasMany(Tag::class, 'post_id');
+        return $this->hasMany(Tag::class, 'article_id');
     }
 
     public function author()
@@ -35,6 +35,16 @@ class Article extends Model
     public function likes()
     {
         return $this->hasMany(Likes::class);
+    }
+
+    public function lastEditor()
+    {
+        return $this->belongsTo(User::class, 'last_editor_id');
+    }
+
+    public function scopeDrafts($query)
+    {
+        return $query->where('is_publish', false);
     }
 
     public function comments()

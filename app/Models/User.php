@@ -71,4 +71,15 @@ class User extends Authenticatable
         return $this->roles->contains('name', $roleName);
     }
 
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->roles->pluck('name')->intersect($roles)->isNotEmpty();
+    }
+
+    public function isModerator()
+    {
+        return $this->role === 'moder';
+    }
+
+
 }

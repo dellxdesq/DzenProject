@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Role;
@@ -27,7 +28,17 @@ class UserController extends Controller
 
         $users = $query->get();
 
-        return view('users.index', compact('users'));
+        $moderationArticles = [];
+        $user = auth()->user();
+        if ($user->hasRole('moder') || $user->hasRole('admin')) {
+            $moderationArticles = Article::where('is_publish', false)
+                ->whereNull('delete_date')
+                ->orderBy('created_at', 'desc')
+                ->with('author')
+                ->get();
+        }
+
+        return view('users.index', compact('users', 'moderationArticles'));
     }
 
     public function makeAuthor(Request $request, User $user)
@@ -81,4 +92,40 @@ class UserController extends Controller
 
         return back();
     }
+
+
+    public function edit()
+    {
+        $user = auth()->user();
+
+        $moderationArticles = [];
+
+        if ($user->hasRole('moder') || $user->hasRole('admin')) {
+            $moderationArticles = Article::where('is_publish', false)
+                ->whereNull('delete_date')
+                ->orderBy('created_at', 'desc')
+                ->with('author')
+                ->get();
+        }
+
+        return view('profile.edit', compact('moderationArticles', 'user'));
+    }
+    public function show()
+    {
+        $user = auth()->user();
+
+        $moderationArticles = [];
+
+        if ($user->hasRole('moder') || $user->hasRole('admin')) {
+            $moderationArticles = Article::where('is_publish', false)
+                ->whereNull('delete_date')
+                ->orderBy('created_at', 'desc')
+                ->with('author')
+                ->get();
+        }
+
+        return view('profile.show', compact('moderationArticles'));
+    }
+
+
 }

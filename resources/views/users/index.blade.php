@@ -95,6 +95,31 @@
                         </tbody>
                     </table>
                 </div>
+                @if (auth()->user()->hasRole('moder') || auth()->user()->hasRole('admin'))
+                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Статьи на модерации</h3>
+
+                        @if(!$moderationArticles || $moderationArticles->isEmpty())
+
+                        <p class="text-gray-700 dark:text-gray-300">Нет статей для модерации.</p>
+                        @else
+                            <ul class="space-y-2">
+                                @foreach($moderationArticles as $article)
+                                    <li class="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-600 rounded">
+                                        <div>
+                                            <p class="text-gray-900 dark:text-gray-100 font-semibold">{{ $article->title }}</p>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Автор: {{ $article->author->name ?? 'Неизвестно' }}</p>
+                                        </div>
+                                        <a href="{{ route('articles.show', $article->id) }}"
+                                           class="text-blue-600 hover:underline dark:text-blue-400">
+                                            Перейти
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
     </div>

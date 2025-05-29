@@ -1,26 +1,26 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Likes;
-use App\Repositories\ArticleRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use App\Models\Tag;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Repositories\ArticleRepository;
 use League\CommonMark\CommonMarkConverter;
 
 class ArticleController extends Controller
 {
-
     public function dashboard(Request $request, ArticleRepository $repository)
     {
         $filters = $request->only(['search', 'category']);
         $articles = $repository->getAll($filters)->paginate(12);
         $categories = Category::all();
-        return view('dashboard', compact('articles', 'categories'));
 
+        return view('dashboard', compact('articles', 'categories'));
     }
 
     public function preview($filename)
@@ -39,6 +39,7 @@ class ArticleController extends Controller
         $filters = $request->only(['search', 'category']);
         $articles = $repository->getAll($filters)->paginate(12);
         $categories = Category::all();
+
         return view('articles.index', compact('articles', 'categories'));
     }
 
@@ -79,7 +80,6 @@ class ArticleController extends Controller
             }
 
             $file->move($destination, $filename);
-
             $previewPath = 'storage/articles_photo/' . $filename;
         }
 
@@ -89,12 +89,10 @@ class ArticleController extends Controller
             'description' => $request->input('description'),
             'preview_path' => $previewPath,
             'created_date' => Carbon::now(),
-            'publish_date' => Carbon::now(),
             'author_id' => auth()->id(),
-            'is_publish' => true,
-            'channel_id' => $request->input('channel_id')
+            'is_publish' => false,
+            'channel_id' => $request->input('channel_id'),
         ]);
-
 
         $article->categories()->sync($request->input('categories'));
 
@@ -102,15 +100,14 @@ class ArticleController extends Controller
             $tags = explode(',', $request->tags);
             foreach ($tags as $tag) {
                 Tag::create([
-                    'post_id' => $article->id,
-                    'name' => trim($tag)
+                    'article_id' => $article->id,
+                    'name' => trim($tag),
                 ]);
             }
         }
 
-        return redirect()->route('articles.show', $article->id);
+        return redirect()->route('dashboard')->with('success', 'Черновик статьи создан и отправлен на модерацию.');
     }
-
 
     public function like($id)
     {
@@ -132,17 +129,16 @@ class ArticleController extends Controller
         return back();
     }
 
-
     public function comment(Request $request, $id)
     {
         $request->validate([
-            'text' => 'required|string|max:1000'
+            'text' => 'required|string|max:1000',
         ]);
 
         Comment::create([
             'article_id' => $id,
             'user_id' => auth()->id(),
-            'text' => $request->input('text')
+            'text' => $request->input('text'),
         ]);
 
         return back();
@@ -154,7 +150,6 @@ class ArticleController extends Controller
 
         $content = $article->content;
 
-        // Заменяем двойные переносы строк на один перенос + <br>
         $contentWithBr = preg_replace("/\n\s*\n/", "\n<br>\n", $content);
 
         $converter = new CommonMarkConverter([
@@ -169,5 +164,76 @@ class ArticleController extends Controller
 
         return view('articles.show', compact('article'));
     }
-}
 
+    public function edit(Article $article)
+    {
+        if (auth()->id() !== $article->author_id && !auth()->user()->hasRole('moder')) {
+            abort(403);
+        }
+
+        return view('articles.edit', compact('article'));
+    }
+
+    public function update(Request $request, Article $article)
+    {
+        if (auth()->id() !== $article->author_id && !auth()->user()->hasRole('moder')) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'description' => 'nullable|string',
+            'content' => 'nullable|string'
+        ]);
+
+        $article->description = $data['description'] ?? null;
+        $article->content = $data['content'] ?? null;
+        $article->edit_date = now();
+
+        if ($request->has('publish') && auth()->user()->hasRole('moder')) {
+            $article->is_publish = true;
+            $article->publish_date = now();
+            $article->last_editor_id = auth()->id();
+        }
+
+        $article->save();
+
+        return redirect()->route('articles.show', $article)->with('success', 'Статья обновлена');
+    }
+
+
+    public function publish(Article $article)
+    {
+        if (!auth()->user()->hasRole('moder')) {
+            abort(403);
+        }
+
+        $article->update([
+            'is_publish' => true,
+            'publish_date' => now()
+        ]);
+
+        return redirect()->route('articles.show', $article)->with('success', 'Статья опубликована');
+    }
+
+    public function destroy(Article $article)
+    {
+        if (!auth()->user()->hasRole('moder')) {
+            abort(403, 'Нет прав для удаления статьи');
+        }
+
+        if ($article->preview_path && file_exists(base_path($article->preview_path))) {
+            unlink(base_path($article->preview_path));
+        }
+
+        $article->tags()->delete();
+        $article->likes()->delete();
+        $article->comments()->delete();
+
+        $article->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Статья удалена');
+    }
+
+
+
+}

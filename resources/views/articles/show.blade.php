@@ -17,6 +17,14 @@
             <h2 class="article-title">Тема: {{ $article->title }}</h2>
             <div class="article-meta">
                 <p><strong>Автор:</strong> {{ $article->author?->full_name ?? 'Неизвестно' }}</p>
+                @auth
+                    @if(auth()->user()->hasRole('moder'))
+                        <a href="{{ route('articles.edit', $article->id) }}"
+                           class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-3 rounded text-sm ml-4">
+                            ✏️ Редактировать
+                        </a>
+                    @endif
+                @endauth
                 <p><strong>Опубликовано:</strong>
                     {{ $article->publish_date ? \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y H:i') : 'Не указано' }}
                 </p>
