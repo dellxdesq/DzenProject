@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Channel;
 use App\Models\Role;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -44,16 +45,31 @@ class UserController extends Controller
     public function makeAuthor(Request $request, User $user)
     {
         $authorRole = Role::where('name', 'author')->first();
-        $moderRole = Role::where('name', 'moder')->first();
         if (!$authorRole) {
             return back()->with('error', 'Роль "author" не найдена');
         }
 
         if ($request->input('author') == '1') {
+            $user->roles()->syncWithoutDetaching([$authorRole->id]);
 
-            $user->roles()->sync([$authorRole->id]);
+            if (!$user->channel) {
+                Channel::create([
+                    'user_id' => $user->id,
+                    'name' => 'Канал ' . $user->full_name,
+                    'description' => 'Описание канала по умолчанию',
+                    'photo' => null,
+                ]);
+            }
+
         } else {
+            // Удаляем роль автора
             $user->roles()->detach($authorRole->id);
+
+            // Удаляем канал и его статьи, если он есть
+            if ($user->channel) {
+                $user->channel->articles()->delete();
+                $user->channel->delete();
+            }
         }
 
         return back();
