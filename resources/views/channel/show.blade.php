@@ -39,7 +39,7 @@
 
             {{-- Список статей --}}
             <div class="grid grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-[10px] mt-[40px]">
-                @foreach($channel->articles as $article)
+                @foreach($articles as $article)
                     <a href="{{ route('articles.show', $article->id) }}" class="group">
                         <div class="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700
                                     rounded-2xl overflow-hidden transition duration-200

@@ -11,8 +11,17 @@ class ChannelController extends Controller
     use AuthorizesRequests;
     public function show($id)
     {
-        $channel = Channel::with('articles')->findOrFail($id);
-        return view('channel.show', compact('channel'));
+        $channel = Channel::findOrFail($id);
+
+        $articlesQuery = $channel->articles()->with(['likes', 'comments']);
+
+        if (auth()->id() === $channel->user_id) {
+            $articles = $articlesQuery->get();
+        } else {
+            $articles = $articlesQuery->whereNotNull('publish_date')->get();
+        }
+
+        return view('channel.show', compact('channel', 'articles'));
     }
 
     public function update(Request $request, Channel $channel)
