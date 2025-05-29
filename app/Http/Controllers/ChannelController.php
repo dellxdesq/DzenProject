@@ -12,13 +12,33 @@ class ChannelController extends Controller
     public function show($id)
     {
         $channel = Channel::findOrFail($id);
+        $user = auth()->user();
 
         $articlesQuery = $channel->articles()->with(['likes', 'comments']);
 
-        if (auth()->id() === $channel->user_id) {
-            $articles = $articlesQuery->get();
+        $isOwnerOrModer = $user && (
+                $user->id === $channel->user_id ||
+                $user->hasRole('moder') ||
+                $user->hasRole('admin')
+            );
+
+        if ($isOwnerOrModer) {
+            $drafts = (clone $articlesQuery)
+                ->where('is_publish', false)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            $published = (clone $articlesQuery)
+                ->where('is_publish', true)
+                ->orderBy('publish_date', 'desc')
+                ->get();
+
+            $articles = $drafts->concat($published);
         } else {
-            $articles = $articlesQuery->whereNotNull('publish_date')->get();
+            $articles = $articlesQuery
+                ->where('is_publish', true)
+                ->orderBy('publish_date', 'desc')
+                ->get();
         }
 
         return view('channel.show', compact('channel', 'articles'));

@@ -62,10 +62,8 @@ class UserController extends Controller
             }
 
         } else {
-            // Удаляем роль автора
             $user->roles()->detach($authorRole->id);
 
-            // Удаляем канал и его статьи, если он есть
             if ($user->channel) {
                 $user->channel->articles()->delete();
                 $user->channel->delete();
