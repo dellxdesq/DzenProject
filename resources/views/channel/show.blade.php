@@ -77,8 +77,15 @@
                                     </div>
                                 </div>
                                 <div>
-                                    {{ \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y') }}
+                                    @if(!$article->is_publish)
+                                        <span title="Ожидайте пока эту статью одобрит модератор" class="text-red-500 cursor-help">
+                                        Не опубликована
+                                        </span>
+                                    @else
+                                        {{ \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y') }}
+                                    @endif
                                 </div>
+
                             </div>
                         </div>
                     </a>

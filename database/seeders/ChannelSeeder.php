@@ -38,13 +38,6 @@ class ChannelSeeder extends Seeder
                 'is_publish' => true,
                 'channel_id' => $channel->id,
             ]);
-
-            // Пример тегов
-            $tags = ['Наука', 'Спорт', 'Еда'];
-            Tag::create([
-                'post_id' => $article->id,
-                'name' => $tags[array_rand($tags)]
-            ]);
         }
     }
 }
