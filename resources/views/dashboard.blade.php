@@ -17,7 +17,7 @@
     <div class="py-6 px-4 mx-auto">
         <div class="flex gap-6">
             {{-- Категории --}}
-            <aside class="w-60 bg-gray-800 p-4 rounded shadow shrink-0">
+            <aside class="w-60 bg-gray-100 dark:bg-gray-900 p-4 rounded shadow shrink-0">
                 <h4 class="font-semibold mb-2 text-white">Категории</h4>
                 <ul class="space-y-1">
                     @foreach($categories as $category)
@@ -52,8 +52,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     @forelse ($articles as $article)
-                        <div class="bg-white dark:bg-gray-800 border border-gray-700 rounded shadow overflow-hidden flex flex-col min-h-[320px] w-full">
+                        <div class="bg-white dark:bg-gray-900 border border-gray-700 rounded shadow overflow-hidden flex flex-col w-full">
 
+                            {{-- Превью статьи --}}
                             @if($article->preview_path)
                                 <img src="{{ route('articles.preview', basename($article->preview_path)) }}"
                                      alt="Превью статьи"
@@ -64,27 +65,52 @@
                                 </div>
                             @endif
 
-                            <div class="p-4 flex flex-col flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                                    <a href="{{ route('articles.show', $article->id) }}">
+                            {{-- Заголовок --}}
+                            <div class="px-4 pt-3">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                                    <a href="{{ route('articles.show', $article->id) }}" class="hover:underline">
                                         {{ $article->title }}
                                     </a>
                                 </h3>
-                                <p class="text-gray-700 dark:text-gray-300 text-sm overflow-hidden break-words mb-3"
-                                   style="max-height: 4.5rem;">
-                                    {{ \Illuminate\Support\Str::limit($article->description, 150) }}
-                                </p>
-                                <div class="flex justify-between items-center text-sm text-gray-400 mt-auto pt-2 border-t border-gray-700">
-                                    <span>Канал:
-                                        <a href="{{ route('channels.show', $article->channel->id) }}"
-                                           class="text-indigo-600 hover:text-indigo-800 underline transition">{{ $article->channel->name }}
-                                        </a>
-                                    </span>
+                            </div>
 
-                                    <span>{{ \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y') }}</span>
+                            {{-- Описание --}}
+                            <div class="px-4">
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2 line-clamp-2">
+                                    {{ \Illuminate\Support\Str::limit($article->description, 120) }}
+                                </p>
+                            </div>
+
+                            {{-- Канал автора --}}
+                            <div class="px-4 mb-1">
+                                <a href="{{ route('channels.show', $article->channel->id) }}" class="flex items-center gap-2 group">
+                                    <img src="{{ $article->channel->photo ?? 'https://via.placeholder.com/40' }}"
+                                         alt="{{ $article->channel->name }}"
+                                         class="w-8 h-8 rounded-full object-cover border border-gray-300 group-hover:scale-105 transition">
+                                    <span class="text-sm text-indigo-400 group-hover:text-indigo-600 transition">
+                                        {{ $article->channel->name }}
+                                    </span>
+                                </a>
+                            </div>
+
+                            {{-- Лайки, Комментарии, Дата --}}
+                            <div class="flex justify-between items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-700 mt-auto">
+                                <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-1">
+                                        <span>{{ $article->likes->count() }}</span>
+                                        <span>❤️</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <span>{{ $article->comments->count() }}</span>
+                                        <span>💬</span>
+                                    </div>
                                 </div>
+                                <span>
+                                    {{ \Carbon\Carbon::parse($article->publish_date)->format('d.m.Y') }}
+                                </span>
                             </div>
                         </div>
+
                     @empty
                         <p class="col-span-3 text-gray-600 dark:text-gray-400">Статей не найдено</p>
                     @endforelse
