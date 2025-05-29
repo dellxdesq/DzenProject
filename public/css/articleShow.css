@@ -95,6 +95,23 @@
     text-align: center;
 }
 
+.edit-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #f1c40f;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+
+.edit-button:hover {
+    background-color: #d4ac0d;
+}
+
+
 .article-preview img {
     max-width: 100%;
     height: auto;

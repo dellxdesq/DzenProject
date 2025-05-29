@@ -23,11 +23,12 @@
                 </div>
 
                 <div>
-                    <label for="categories">Категории</label>
-                    <select name="categories[]" multiple required>
+                    <label for="category">Категория:</label>
+                    <select name="category" id="category" required class="form-control">
+                        <option value="" disabled selected>Выберите категорию</option>
                         @foreach(\App\Models\Category::where('is_hidden', false)->get() as $category)
                             <option value="{{ $category->id }}"
-                                {{ collect(old('categories'))->contains($category->id) ? 'selected' : '' }}>
+                                {{ old('category') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -60,4 +61,14 @@
             document.getElementById('preview-filename').textContent = filename;
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#category').select2({
+                placeholder: 'Выберите категорию',
+                width: '100%',
+                allowClear: true
+            });
+        });
+    </script>
+
 </x-app-layout>

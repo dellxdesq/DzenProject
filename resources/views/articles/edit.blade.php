@@ -28,7 +28,7 @@
             <div class="flex justify-between items-center">
                 <button type="submit"
                         class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded">
-                    💾 Сохранить
+                    Сохранить
                 </button>
 
                 @if(auth()->user()->hasRole('moder'))
