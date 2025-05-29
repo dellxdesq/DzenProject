@@ -95,7 +95,7 @@
                         </tbody>
                     </table>
                 </div>
-                @if (auth()->user()->hasRole('moder') || auth()->user()->hasRole('admin'))
+                @if (auth()->user()->hasRole('moder'))
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Статьи на модерации</h3>
 
