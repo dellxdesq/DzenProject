@@ -7,7 +7,7 @@
             <div class="form-header">
                 <h1>Создание статьи</h1>
                 <div class="form-header-actions">
-                    <button class="button-submit">Опубликовать</button>
+                    <button type="submit" class="button-submit">Опубликовать</button>
                 </div>
             </div>
 

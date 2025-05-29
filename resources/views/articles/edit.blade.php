@@ -25,16 +25,16 @@
                           class="w-full mt-1 rounded border border-gray-300">{{ old('content', $article->content) }}</textarea>
             </div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex justify-end items-center">
                 <button type="submit"
-                        class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded">
+                        class="hidden px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded">
                     Сохранить
                 </button>
 
                 @if(auth()->user()->hasRole('moder'))
                     <button type="submit" name="publish" value="1"
                             class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded">
-                        ✅ Сохранить и опубликовать
+                        Сохранить и опубликовать
                     </button>
                 @endif
             </div>
@@ -47,7 +47,7 @@
                 <button type="submit"
                         class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
                         onclick="return confirm('Удалить статью?')">
-                    🗑️ Удалить
+                    Удалить
                 </button>
             </form>
         @endif

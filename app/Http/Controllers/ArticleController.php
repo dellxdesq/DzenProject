@@ -64,8 +64,7 @@ class ArticleController extends Controller
             'content' => 'required|string',
             'preview' => 'nullable|image',
             'tags' => 'nullable|string',
-            'categories' => 'required|array',
-            'categories.*' => 'exists:categories,id',
+            'category' => 'exists:categories,id',
             'description' => 'nullable|string',
         ]);
 
@@ -95,7 +94,7 @@ class ArticleController extends Controller
             'channel_id' => auth()->user()->channel?->id,
         ]);
 
-        $article->categories()->sync($request->input('categories'));
+        $article->categories()->sync($request->input('category'));
 
         if ($request->filled('tags')) {
             $tags = explode(',', $request->tags);

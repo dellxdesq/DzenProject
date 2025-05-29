@@ -18,7 +18,7 @@
             <div class="article-meta">
                 <p><strong>Автор:</strong> {{ $article->author?->full_name ?? 'Неизвестно' }}</p>
                 @auth
-                    @if(auth()->user()->hasRole('moder'))
+                    @if(auth()->user()->hasRole('moder') & (! $article->is_publish))
                         <a href="{{ route('articles.edit', $article->id) }}" class="edit-button">
                             ✏️ Редактировать
                         </a>
