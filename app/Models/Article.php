@@ -9,7 +9,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'description', 'preview_path', 'author_id', 'created_date', 'publish_date', 'is_publish'];
+    protected $fillable = ['title', 'content', 'description', 'preview_path', 'author_id', 'created_date', 'publish_date', 'is_publish', 'channel_id'];
 
     public function channel()
     {

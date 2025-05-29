@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Likes;
 use App\Models\Tag;
 use App\Models\Category;
+use App\Models\Channel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Repositories\ArticleRepository;
@@ -91,7 +92,7 @@ class ArticleController extends Controller
             'created_date' => Carbon::now(),
             'author_id' => auth()->id(),
             'is_publish' => false,
-            'channel_id' => $request->input('channel_id'),
+            'channel_id' => auth()->user()->channel?->id,
         ]);
 
         $article->categories()->sync($request->input('categories'));
