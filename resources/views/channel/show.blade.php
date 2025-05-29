@@ -58,7 +58,7 @@
                                 </h3>
                                 <p class="text-sm text-gray-700 dark:text-gray-300
                                 whitespace-nowrap overflow-hidden text-ellipsis">
-                                    {{ \Illuminate\Support\Str::limit($article->content, 80) }}
+                                    {{ \Illuminate\Support\Str::limit($article->description, 80) }}
                                 </p>
                             </div>
 
